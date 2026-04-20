@@ -1,0 +1,762 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Emtelligent · GTM Brief — Sindhu Yamsani</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #0b0b0b;
+    --surface: #111111;
+    --border: #222222;
+    --border-light: #1e1e1e;
+    --text-primary: #f0f0f0;
+    --text-secondary: #888888;
+    --text-dim: #555555;
+    --blue: #4A7AFF;
+    --blue-dim: rgba(74,122,255,0.12);
+    --mono: 'Space Mono', monospace;
+    --sans: 'Inter', sans-serif;
+  }
+
+  html, body {
+    background: var(--bg);
+    color: var(--text-primary);
+    font-family: var(--sans);
+    min-height: 100vh;
+    font-size: 15px;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* NAV */
+  nav {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: var(--bg);
+    border-bottom: 1px solid var(--border);
+    padding: 0 48px;
+    display: flex;
+    align-items: stretch;
+    gap: 0;
+  }
+
+  .nav-brand {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--text-dim);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 20px 32px 20px 0;
+    border-right: 1px solid var(--border);
+    margin-right: 32px;
+    display: flex;
+    align-items: center;
+    white-space: nowrap;
+  }
+
+  .nav-tabs {
+    display: flex;
+    align-items: stretch;
+    gap: 0;
+  }
+
+  .nav-tab {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--text-dim);
+    padding: 20px 28px;
+    cursor: pointer;
+    border: none;
+    background: none;
+    border-bottom: 2px solid transparent;
+    margin-bottom: -1px;
+    transition: color 0.15s, border-color 0.15s;
+    white-space: nowrap;
+  }
+
+  .nav-tab:hover { color: var(--text-secondary); }
+  .nav-tab.active { color: var(--blue); border-bottom-color: var(--blue); }
+
+  .nav-tab .num { opacity: 0.5; margin-right: 6px; }
+
+  /* PANELS */
+  .panel { display: none; }
+  .panel.active { display: block; }
+
+  /* SECTION WRAPPER */
+  .section {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 64px 48px 96px;
+  }
+
+  .section-label {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--text-dim);
+    margin-bottom: 32px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .section-label::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+
+  h1 {
+    font-family: var(--sans);
+    font-size: clamp(28px, 3.5vw, 42px);
+    font-weight: 600;
+    line-height: 1.15;
+    color: var(--text-primary);
+    margin-bottom: 16px;
+    letter-spacing: -0.02em;
+  }
+
+  .intro {
+    font-size: 14px;
+    color: var(--text-secondary);
+    max-width: 600px;
+    line-height: 1.7;
+    margin-bottom: 52px;
+  }
+
+  /* PERSONA GRID */
+  .persona-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1px;
+    background: var(--border);
+    border: 1px solid var(--border);
+    margin-bottom: 1px;
+  }
+
+  .persona-card {
+    background: var(--surface);
+    padding: 32px;
+  }
+
+  .persona-header {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 28px;
+    padding-bottom: 24px;
+    border-bottom: 1px solid var(--border-light);
+  }
+
+  .avatar {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--mono);
+    font-size: 12px;
+    font-weight: 700;
+    flex-shrink: 0;
+  }
+
+  .avatar-blue { background: rgba(74,122,255,0.15); color: var(--blue); border: 1px solid rgba(74,122,255,0.3); }
+  .avatar-green { background: rgba(52,211,153,0.1); color: #34D399; border: 1px solid rgba(52,211,153,0.25); }
+
+  .persona-title { font-size: 15px; font-weight: 500; color: var(--text-primary); }
+  .persona-sub { font-size: 12px; color: var(--text-dim); font-family: var(--mono); margin-top: 2px; }
+
+  .field-label {
+    font-family: var(--mono);
+    font-size: 9px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--text-dim);
+    margin-bottom: 8px;
+  }
+
+  .field-body {
+    font-size: 13px;
+    color: var(--text-secondary);
+    line-height: 1.65;
+    margin-bottom: 22px;
+  }
+
+  .tags { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 22px; }
+
+  .tag {
+    font-family: var(--mono);
+    font-size: 10px;
+    padding: 4px 10px;
+    border: 1px solid var(--border);
+    color: var(--text-dim);
+    letter-spacing: 0.04em;
+  }
+
+  .message-box {
+    padding: 16px 18px;
+    border-left: 2px solid var(--blue);
+    background: var(--blue-dim);
+  }
+
+  .message-box.green {
+    border-left-color: #34D399;
+    background: rgba(52,211,153,0.06);
+  }
+
+  .message-box p {
+    font-size: 13px;
+    color: var(--text-primary);
+    line-height: 1.65;
+    font-style: italic;
+  }
+
+  .linkedin-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-top: none;
+    padding: 28px 32px;
+    display: flex;
+    gap: 20px;
+    align-items: flex-start;
+  }
+
+  .linkedin-label {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--blue);
+    letter-spacing: 0.1em;
+    white-space: nowrap;
+    padding-top: 2px;
+    flex-shrink: 0;
+  }
+
+  /* COMPETITIVE TABLE */
+  .comp-table {
+    width: 100%;
+    border-collapse: collapse;
+    border: 1px solid var(--border);
+  }
+
+  .comp-table th {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text-dim);
+    padding: 14px 20px;
+    text-align: left;
+    border-bottom: 1px solid var(--border);
+    background: var(--surface);
+    font-weight: 400;
+  }
+
+  .comp-table th.em-col {
+    color: var(--blue);
+    background: rgba(74,122,255,0.05);
+    border-left: 1px solid rgba(74,122,255,0.2);
+    border-right: 1px solid rgba(74,122,255,0.2);
+  }
+
+  .comp-table td {
+    padding: 14px 20px;
+    font-size: 12px;
+    color: var(--text-secondary);
+    border-bottom: 1px solid var(--border-light);
+    vertical-align: top;
+  }
+
+  .comp-table tr:last-child td { border-bottom: none; }
+
+  .comp-table td.row-label {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--text-dim);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    padding-right: 12px;
+    white-space: nowrap;
+  }
+
+  .comp-table td.em-col {
+    color: var(--text-primary);
+    background: rgba(74,122,255,0.04);
+    border-left: 1px solid rgba(74,122,255,0.15);
+    border-right: 1px solid rgba(74,122,255,0.15);
+  }
+
+  .dot { display: inline-block; width: 6px; height: 6px; border-radius: 50%; margin-right: 6px; vertical-align: middle; }
+  .dot-y { background: #34D399; }
+  .dot-p { background: #FBBF24; }
+  .dot-n { background: #555; }
+
+  .insight-box {
+    margin-top: 1px;
+    border: 1px solid var(--border);
+    border-top: none;
+    padding: 24px 28px;
+    background: var(--surface);
+    border-left: 2px solid var(--blue);
+  }
+
+  .insight-box .insight-label {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--blue);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+
+  .insight-box p { font-size: 13px; color: var(--text-secondary); line-height: 1.7; }
+  .insight-box strong { color: var(--text-primary); font-weight: 500; }
+
+  /* WHY ME TABLE */
+  .why-table {
+    width: 100%;
+    border-collapse: collapse;
+    border: 1px solid var(--border);
+  }
+
+  .why-table .col-jd {
+    width: 36%;
+    padding: 22px 24px;
+    border-bottom: 1px solid var(--border-light);
+    border-right: 1px solid var(--border);
+    vertical-align: top;
+  }
+
+  .why-table .col-ev {
+    padding: 22px 28px;
+    border-bottom: 1px solid var(--border-light);
+    vertical-align: top;
+  }
+
+  .why-table tr:last-child .col-jd,
+  .why-table tr:last-child .col-ev { border-bottom: none; }
+
+  .why-table .col-jd .jd-text {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--text-dim);
+    line-height: 1.6;
+    letter-spacing: 0.01em;
+  }
+
+  .jd-bullet {
+    display: inline-block;
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: var(--blue);
+    margin-right: 8px;
+    vertical-align: middle;
+    flex-shrink: 0;
+    margin-top: -1px;
+  }
+
+  .jd-row { display: flex; align-items: flex-start; margin-bottom: 0; }
+
+  .ev-text {
+    font-size: 13px;
+    color: var(--text-secondary);
+    line-height: 1.75;
+  }
+
+  .ev-text a {
+    color: var(--blue);
+    text-decoration: none;
+  }
+
+  .ev-text a:hover { text-decoration: underline; }
+
+  .highlight {
+    color: #34D399;
+    font-weight: 500;
+  }
+
+  .why-header {
+    display: grid;
+    grid-template-columns: 36% 1fr;
+    border: 1px solid var(--border);
+    border-bottom: none;
+  }
+
+  .why-header-cell {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text-dim);
+    padding: 12px 24px;
+    background: var(--surface);
+  }
+
+  .why-header-cell.right {
+    border-left: 1px solid var(--border);
+    padding-left: 28px;
+  }
+
+  .hero-label {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--text-dim);
+    margin-bottom: 8px;
+  }
+
+  .closer {
+    margin-top: 1px;
+    border: 1px solid var(--border);
+    border-top: none;
+    background: rgba(74,122,255,0.06);
+    border-left: 2px solid var(--blue);
+    padding: 28px 32px;
+  }
+
+  .closer h3 {
+    font-size: 16px;
+    font-weight: 500;
+    color: var(--text-primary);
+    margin-bottom: 10px;
+    letter-spacing: -0.01em;
+  }
+
+  .closer p {
+    font-size: 13px;
+    color: var(--text-secondary);
+    line-height: 1.75;
+    max-width: 740px;
+  }
+
+  .closer .blue { color: var(--blue); }
+
+  /* FOOTER */
+  footer {
+    border-top: 1px solid var(--border);
+    padding: 24px 48px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    max-width: 100%;
+  }
+
+  .footer-text {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--text-dim);
+    letter-spacing: 0.08em;
+  }
+
+  .footer-link {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--blue);
+    letter-spacing: 0.08em;
+    text-decoration: none;
+  }
+
+  @media (max-width: 768px) {
+    .persona-grid { grid-template-columns: 1fr; }
+    .section { padding: 40px 24px 64px; }
+    nav { padding: 0 24px; }
+    .nav-brand { display: none; }
+    .nav-tab { padding: 16px 16px; font-size: 10px; }
+    h1 { font-size: 26px; }
+    .why-header, .why-table .col-jd { width: auto; }
+    .why-table, .why-header { display: block; }
+    .why-table tr, .why-header { display: flex; flex-direction: column; }
+    .why-table .col-jd, .why-table .col-ev { width: 100%; border-right: none; }
+    .why-header-cell.right { border-left: none; border-top: 1px solid var(--border); }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-brand">Emtelligent · GTM Brief</div>
+  <div class="nav-tabs">
+    <button class="nav-tab active" onclick="show('buyers', this)"><span class="num">01 ·</span> Buyer Personas</button>
+    <button class="nav-tab" onclick="show('competitive', this)"><span class="num">02 ·</span> Competitive Landscape</button>
+    <button class="nav-tab" onclick="show('whyme', this)"><span class="num">03 ·</span> Why Me</button>
+  </div>
+</nav>
+
+<!-- PANEL 1: BUYER PERSONAS -->
+<div id="buyers" class="panel active">
+  <div class="section">
+    <div class="section-label">Buyer personas → messaging framework</div>
+    <h1>Emtelligent's buyers are not the same person.</h1>
+    <p class="intro">Two distinct buyers. Different motivations, different fears, different language. The message that lands with a VP of Data will lose a Clinical Informatics Officer in the first sentence — and vice versa.</p>
+
+    <div class="persona-grid">
+      <div class="persona-card">
+        <div class="persona-header">
+          <div class="avatar avatar-blue">VD</div>
+          <div>
+            <div class="persona-title">VP of Data</div>
+            <div class="persona-sub">National payer / health system</div>
+          </div>
+        </div>
+
+        <div class="field-label">Core job to be done</div>
+        <div class="field-body">Make unstructured clinical data usable for analytics, risk models, and AI — without building a custom NLP team or depending on unreliable black-box outputs.</div>
+
+        <div class="field-label">What they care about</div>
+        <div class="tags">
+          <span class="tag">Accuracy at scale</span>
+          <span class="tag">EHR integration</span>
+          <span class="tag">HIPAA / compliance</span>
+          <span class="tag">Throughput benchmarks</span>
+          <span class="tag">ROI on data infra</span>
+        </div>
+
+        <div class="field-label">Their fear</div>
+        <div class="field-body">AI that hallucinates clinical codes and exposes the org to liability. They've been burned by overpromised ML vendors before. They need proof, not demos.</div>
+
+        <div class="field-label">Message that lands</div>
+        <div class="message-box">
+          <p>"Deterministic, auditable NLP — not a black box. 99% benchmark accuracy on 5B+ clinical notes. Your compliance team will sleep at night."</p>
+        </div>
+      </div>
+
+      <div class="persona-card">
+        <div class="persona-header">
+          <div class="avatar avatar-green">CI</div>
+          <div>
+            <div class="persona-title">Clinical Informatics Officer</div>
+            <div class="persona-sub">Health system / IDN</div>
+          </div>
+        </div>
+
+        <div class="field-label">Core job to be done</div>
+        <div class="field-body">Bridge clinical workflows and data systems — surface the right information to the right stakeholder without forcing manual chart review or disrupting how clinicians already work.</div>
+
+        <div class="field-label">What they care about</div>
+        <div class="tags">
+          <span class="tag">Clinician trust</span>
+          <span class="tag">ICD / SNOMED coding</span>
+          <span class="tag">Time to value</span>
+          <span class="tag">Workflow fit</span>
+          <span class="tag">10+ therapeutic areas</span>
+        </div>
+
+        <div class="field-label">Their fear</div>
+        <div class="field-body">A tool clinicians ignore because it misreads context or adds friction. Trust is hard to rebuild once broken. They want to see real document types — discharge summaries, op reports, path notes — handled correctly.</div>
+
+        <div class="field-label">Message that lands</div>
+        <div class="message-box green">
+          <p>"Clinically validated NLP trained across 10+ therapeutic areas and real document types. Fits how your teams already work — no workflow redesign required."</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="linkedin-card">
+      <div class="linkedin-label">LINKEDIN ↗</div>
+      <div>
+        <div class="field-label" style="margin-bottom:6px">Audience: healthcare adjacent, shorter attention span, trust built through social proof and specificity</div>
+        <div class="ev-text">"We just hit 99% accuracy on clinical NLP — here's what that actually means for AI in healthcare." Hook with the number, explain the implication in plain language, close with a proof point. No jargon. The scroll stops at specifics.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PANEL 2: COMPETITIVE -->
+<div id="competitive" class="panel">
+  <div class="section">
+    <div class="section-label">Market positioning → competitive landscape</div>
+    <h1>Where Emtelligent wins — and why it matters.</h1>
+    <p class="intro">The clinical NLP market is fragmented. Most players are either too broad, too voice-focused, or too dev-heavy for payer and analytics use cases. Emtelligent's white space is the deterministic infrastructure layer.</p>
+
+    <table class="comp-table">
+      <thead>
+        <tr>
+          <th style="width:160px"></th>
+          <th class="em-col">Emtelligent</th>
+          <th>Nuance / Microsoft</th>
+          <th>AWS Comprehend Medical</th>
+          <th>John Snow Labs</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="row-label">Primary focus</td>
+          <td class="em-col">Clinical NLP → structured coded data for payers &amp; analytics</td>
+          <td>Ambient voice, CDI, clinical scribe tools</td>
+          <td>General medical entity extraction via API</td>
+          <td>Medical NLP library + pretrained models</td>
+        </tr>
+        <tr>
+          <td class="row-label">Output type</td>
+          <td class="em-col"><span class="dot dot-y"></span>Deterministic, auditable</td>
+          <td><span class="dot dot-p"></span>Partial — voice-to-text driven</td>
+          <td><span class="dot dot-n"></span>Probabilistic scores</td>
+          <td><span class="dot dot-p"></span>Model-dependent</td>
+        </tr>
+        <tr>
+          <td class="row-label">Payer / analytics fit</td>
+          <td class="em-col"><span class="dot dot-y"></span>Core market</td>
+          <td><span class="dot dot-n"></span>Not primary</td>
+          <td><span class="dot dot-p"></span>Possible, dev-heavy</td>
+          <td><span class="dot dot-n"></span>Build your own pipeline</td>
+        </tr>
+        <tr>
+          <td class="row-label">Speed to value</td>
+          <td class="em-col"><span class="dot dot-y"></span>API-first, fast integration</td>
+          <td><span class="dot dot-p"></span>Requires full MS stack</td>
+          <td><span class="dot dot-p"></span>AWS infra dependency</td>
+          <td><span class="dot dot-n"></span>Engineering-heavy setup</td>
+        </tr>
+        <tr>
+          <td class="row-label">Benchmark accuracy</td>
+          <td class="em-col"><span class="dot dot-y"></span>99% — 23 pts above industry</td>
+          <td><span class="dot dot-p"></span>Not publicly benchmarked</td>
+          <td><span class="dot dot-p"></span>General purpose, variable</td>
+          <td><span class="dot dot-p"></span>Model and config dependent</td>
+        </tr>
+        <tr>
+          <td class="row-label">Startup agility</td>
+          <td class="em-col"><span class="dot dot-y"></span>Highly customizable, seed-stage speed</td>
+          <td><span class="dot dot-n"></span>Enterprise product cycles</td>
+          <td><span class="dot dot-n"></span>Cloud platform constraints</td>
+          <td><span class="dot dot-p"></span>OSS, community-paced</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="insight-box">
+      <div class="insight-label">Positioning opportunity</div>
+      <p>Nuance owns voice and ambient documentation. AWS owns generic extraction. John Snow Labs serves data science teams who want to build their own. Emtelligent's unclaimed territory is <strong>deterministic, payer-ready NLP</strong> — the infrastructure layer between raw clinical documents and downstream AI. That's a category creation play, not just a feature comparison. The 99% accuracy number and 2M+ expert-annotated data points are the proof points that make the category credible.</p>
+    </div>
+  </div>
+</div>
+
+<!-- PANEL 3: WHY ME -->
+<div id="whyme" class="panel">
+  <div class="section">
+    <div class="section-label">Role requirements → my evidence</div>
+    <h1>Why I built this instead of just applying.</h1>
+    <p class="intro">I'm Sindhu Yamsani — MS Engineering Management at Johns Hopkins (CS track), product analyst background across fintech and healthcare. This artifact is my application — a demonstration of how I think about GTM, built with Claude, not a claim that I can.</p>
+
+    <div class="why-header">
+      <div class="why-header-cell">What Emtelligent needs</div>
+      <div class="why-header-cell right">My evidence</div>
+    </div>
+
+    <table class="why-table">
+      <tbody>
+        <tr>
+          <td class="col-jd">
+            <div class="jd-row">
+              <span class="jd-bullet"></span>
+              <span class="jd-text">Build go-to-market materials that reach real buyers — collateral, content, and campaign assets that support external presence and sales conversations</span>
+            </div>
+          </td>
+          <td class="col-ev">
+            <div class="ev-text">At <a href="#">Checkpoint Surgical</a>, I synthesized 11+ customer interviews to identify adoption barriers, performed market sizing and segmentation, and defined GTM success metrics from zero — the same output Emtelligent needs to drive pipeline. This artifact — a buyer persona framework, competitive map, and positioning brief — is the same muscle, applied to your product.</div>
+          </td>
+        </tr>
+        <tr>
+          <td class="col-jd">
+            <div class="jd-row">
+              <span class="jd-bullet"></span>
+              <span class="jd-text">Position a technical product for different audiences — clinical informaticists to C-suite executives to LinkedIn followers</span>
+            </div>
+          </td>
+          <td class="col-ev">
+            <div class="ev-text">At <a href="#">Johns Hopkins Hospital</a>, I ran 20+ qualitative stakeholder interviews with surgeons, nurses, and administrators — then translated findings into structured workflow maps that identified high-impact bottlenecks. Translating between technical reality and executive narrative is my primary skill. I know what a VP of Data needs to hear versus what a clinician trusts.</div>
+          </td>
+        </tr>
+        <tr>
+          <td class="col-jd">
+            <div class="jd-row">
+              <span class="jd-bullet"></span>
+              <span class="jd-text">Support and own select marketing campaigns — content cadence, product launches, brand-building — with potential to own specific campaigns end-to-end</span>
+            </div>
+          </td>
+          <td class="col-ev">
+            <div class="ev-text">At <a href="#">Deloitte</a>, I supported delivery of 5 customer-facing lending and treasury features across 15–20 agile sprints — writing PRDs with acceptance criteria and keeping sprint execution aligned with roadmap priorities. I've shipped real deliverables under enterprise constraints. I know what "end-to-end ownership" actually requires.</div>
+          </td>
+        </tr>
+        <tr>
+          <td class="col-jd">
+            <div class="jd-row">
+              <span class="jd-bullet"></span>
+              <span class="jd-text">Develop competitive and market awareness — research that sharpens positioning and keeps the team ahead of market shifts</span>
+            </div>
+          </td>
+          <td class="col-ev">
+            <div class="ev-text">The competitive landscape in Tab 02 was built using primary research on the clinical NLP market — positioning Emtelligent against Nuance, AWS Comprehend Medical, and John Snow Labs across output type, payer fit, speed, and accuracy. At Checkpoint Surgical, I performed the same analysis to define GTM success metrics and validate product-market fit indicators before launch.</div>
+          </td>
+        </tr>
+        <tr>
+          <td class="col-jd">
+            <div class="jd-row">
+              <span class="jd-bullet"></span>
+              <span class="jd-text">You build with AI tools daily — Claude Code, Perplexity, or similar. You don't just use them, you build workflows and artifacts at speed</span>
+            </div>
+          </td>
+          <td class="col-ev">
+            <div class="ev-text">This artifact was built with Claude — not as a novelty, but as a deliberate demonstration. <span class="highlight">I build AI-powered artifacts for every company I'm seriously interested in joining.</span> It's faster than a cover letter, more credible than a portfolio screenshot, and shows exactly how I work. My JHU coursework in AI combined with a CS background means I'm not learning these tools — I'm already building with them.</div>
+          </td>
+        </tr>
+        <tr>
+          <td class="col-jd">
+            <div class="jd-row">
+              <span class="jd-bullet"></span>
+              <span class="jd-text">You're data-driven — you measure what you ship, track engagement, test copy, use numbers to inform what's working</span>
+            </div>
+          </td>
+          <td class="col-ev">
+            <div class="ev-text">Every deliverable I've shipped has a number attached. <span class="highlight">85% reduction</span> in loan processing time (15 days → 2 days) for a $204B client at Deloitte. <span class="highlight">33% projected reduction</span> in OR turnover (67 → 45 mins) at Johns Hopkins Hospital, enabling ~200 additional annual surgeries. <span class="highlight">85% drop</span> in query latency at Hexagon. I don't ship without knowing how to measure it.</div>
+          </td>
+        </tr>
+        <tr>
+          <td class="col-jd">
+            <div class="jd-row">
+              <span class="jd-bullet"></span>
+              <span class="jd-text">You're autonomous and fast — take a 10-minute briefing and come back with an 80% complete deliverable, not a list of clarifying questions</span>
+            </div>
+          </td>
+          <td class="col-ev">
+            <div class="ev-text">Won 1st place at Hexagon's Hexathon by leading a team of 4 to design a deep-learning defect detection solution under competition constraints. Won 1st prize for the Product Space PM capstone by prioritizing 2 high-impact features from 6 using RICE scoring and defining transaction volume metrics — end-to-end, without waiting for direction. This brief is a further example of that output.</div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="closer">
+      <h3>The combination that's hard to find at the intern level</h3>
+      <p>Clinical stakeholder experience from Johns Hopkins Hospital and Checkpoint Surgical. A CS and product background from Deloitte and Hexagon. And the ability to build AI-native artifacts that demonstrate strategic thinking rather than just describe it. I understand Emtelligent's buyers — <span class="blue">because I've sat in rooms with them.</span></p>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <div class="footer-text">Sindhu Yamsani · syamsan1@jh.edu · +1 443 415 6213</div>
+  <a class="footer-link" href="https://linkedin.com/in/sindhu-yamsani/">linkedin.com/in/sindhu-yamsani ↗</a>
+</footer>
+
+<script>
+  function show(id, btn) {
+    document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+    document.getElementById(id).classList.add('active');
+    btn.classList.add('active');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+</script>
+</body>
+</html>
